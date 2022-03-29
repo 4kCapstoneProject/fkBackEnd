@@ -1,12 +1,15 @@
 package com.oldaim.fkbackend.Entity;
 
 import com.oldaim.fkbackend.Entity.EnumType.Auth;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
@@ -26,4 +29,13 @@ public class User extends BaseEntity {
     @Column
     @Enumerated
     private Auth auth;
+
+    @Builder
+    public User(Long id, String userId, String userPassword, String userEmail, Auth auth) {
+        this.id = id;
+        this.userId = userId;
+        this.userPassword = userPassword;
+        this.userEmail = userEmail;
+        this.auth = auth;
+    }
 }

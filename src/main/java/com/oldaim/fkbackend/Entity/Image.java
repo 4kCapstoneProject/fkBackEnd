@@ -1,12 +1,17 @@
 package com.oldaim.fkbackend.Entity;
 
 import com.oldaim.fkbackend.Entity.EnumType.ImageUsage;
+import com.oldaim.fkbackend.Entity.Information.Information;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Image extends BaseEntity{
 
     @Id
@@ -20,10 +25,16 @@ public class Image extends BaseEntity{
     @Column
     private String filePath;
 
-    @Column
-    private ImageUsage imageUsage;
-
     @JoinColumn
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Information information;
+
+
+    @Builder
+    public Image(Long id, String fileName, String filePath, Information information) {
+        this.id = id;
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.information = information;
+    }
 }
