@@ -1,11 +1,9 @@
 package com.oldaim.fkbackend.Entity;
 
-import com.oldaim.fkbackend.Entity.EnumType.ImageUsage;
 import com.oldaim.fkbackend.Entity.Information.Information;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
 

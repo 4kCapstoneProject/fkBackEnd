@@ -3,7 +3,6 @@ package com.oldaim.fkbackend.Service;
 import com.oldaim.fkbackend.Entity.Image;
 import com.oldaim.fkbackend.Entity.Information.Information;
 import com.oldaim.fkbackend.Repository.ImageRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
