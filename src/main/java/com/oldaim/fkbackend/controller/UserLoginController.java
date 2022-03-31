@@ -27,7 +27,7 @@ public class UserLoginController {
 
         String userId = userService.registerUser(userDTO);
 
-        return userId +" "+ "님이 로그인 하셨습니다.";
+        return userId +" "+ "님이 회원가입 하셨습니다.";
 
     }
 
@@ -41,10 +41,13 @@ public class UserLoginController {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        String token = jwtAuthenticationProvider.createToken(userEntity.getUsername(),userEntity.getAuthorities());
+        String token = jwtAuthenticationProvider.createToken(userEntity.getUsername(),userEntity.getAuth().toString());
+
         response.setHeader("X-AUTH-TOKEN", token);
 
-        return token;
+        String loginId = userEntity.getUserId();
+
+        return loginId + " " + "님이 로그인 하셨습니다.";
 
     }
 

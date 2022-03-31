@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,7 +32,12 @@ public class TargetInfoController {
             MediaType.MULTIPART_FORM_DATA_VALUE})
     public void uploadTarget(@RequestPart TargetInfoDTO targetInfoDTO,
                              @RequestPart List<MultipartFile> imageFileList,
-                             @RequestHeader(value = "X-AUTH-TOKEN") String token) throws IOException {
+                             // @RequestHeader(value = "X-AUTH-TOKEN") String token
+                             HttpServletRequest request) throws IOException {
+
+        String token = jwtAuthenticationProvider.resolveToken(request);
+
+        log.info(token);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(jwtAuthenticationProvider.getUserPk(token));
 

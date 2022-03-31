@@ -1,5 +1,5 @@
 package com.oldaim.fkbackend.Entity.EnumType;
 
 public enum Auth {
-    USER,ADMIN
+    ROLE_USER,ROLE_ADMIN
 }
