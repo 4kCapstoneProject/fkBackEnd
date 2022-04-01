@@ -1,6 +1,6 @@
 package com.oldaim.fkbackend.Service;
 
-import com.oldaim.fkbackend.DTO.TargetInfoDTO;
+import com.oldaim.fkbackend.DTO.TargetInfoDto;
 import com.oldaim.fkbackend.Entity.Information.TargetInfo;
 import com.oldaim.fkbackend.Entity.User;
 import com.oldaim.fkbackend.Repository.InformationRepository.TargetInfoRepository;
@@ -15,7 +15,7 @@ public class TargetInfoService {
     private final TargetInfoRepository targetInfoRepository;
 
 
-    public TargetInfo dtoToEntity(TargetInfoDTO infoDTO, User user){
+    public TargetInfo dtoToEntity(TargetInfoDto infoDTO, User user){
         return TargetInfo.builder()
                 .user(user)
                 .personAge(infoDTO.getPersonAge())
@@ -24,7 +24,7 @@ public class TargetInfoService {
                 .build();
     }
 
-    public TargetInfo targetInfoSave(TargetInfoDTO infoDTO,String userId){
+    public TargetInfo targetInfoSave(TargetInfoDto infoDTO, String userId){
 
         User infoOwner = userService.findByUserId(userId)
                 .orElseThrow(()->new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));

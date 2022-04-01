@@ -36,6 +36,7 @@ public class User extends BaseEntity implements UserDetails{
     @Enumerated
     private Auth auth;
 
+    private String refreshToken;
 
     @Builder
     public User(Long id, String userId, String userPassword, String userEmail, Auth auth) {
@@ -44,6 +45,10 @@ public class User extends BaseEntity implements UserDetails{
         this.userPassword = userPassword;
         this.userEmail = userEmail;
         this.auth = auth;
+    }
+
+    public void updateRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
     }
 
     @Override

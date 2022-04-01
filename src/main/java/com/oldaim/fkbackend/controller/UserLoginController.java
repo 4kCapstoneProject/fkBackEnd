@@ -1,11 +1,10 @@
 package com.oldaim.fkbackend.controller;
 
-import com.oldaim.fkbackend.DTO.UserDTO;
-import com.oldaim.fkbackend.Entity.User;
-import com.oldaim.fkbackend.Security.jwt.JwtAuthenticProvider;
+import com.oldaim.fkbackend.DTO.ReissueDto;
+import com.oldaim.fkbackend.DTO.UserDto;
 import com.oldaim.fkbackend.Service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -13,17 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
+@Log4j2
 @RequestMapping("/api/auth")
 public class UserLoginController {
 
     private final UserService userService;
 
-    private final JwtAuthenticProvider jwtAuthenticationProvider;
-
-    private final PasswordEncoder passwordEncoder;
-
     @PostMapping("/register")
-    public String register(@RequestBody UserDTO userDTO){
+    public String register(@RequestBody UserDto userDTO){
 
         String userId = userService.registerUser(userDTO);
 
@@ -32,23 +28,23 @@ public class UserLoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO userDTO, HttpServletResponse response){
+    public String login(@RequestBody UserDto userDTO, HttpServletResponse response){
 
-        User userEntity = userService.findByUserId(userDTO.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
 
-        if (!passwordEncoder.matches(userDTO.getUserPw() , userEntity.getPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
-        }
+        String accessToken = userService.loginUser(userDTO);
 
-        String token = jwtAuthenticationProvider.createToken(userEntity.getUsername(),userEntity.getAuth().toString());
+        response.setHeader("ACCESS-TOKEN", accessToken);
 
-        response.setHeader("X-AUTH-TOKEN", token);
+        return "로그인이 성공하였습니다.";
 
-        String loginId = userEntity.getUserId();
+    }
 
-        return loginId + " " + "님이 로그인 하셨습니다.";
+    @PostMapping("/reissueactoken")
+    public String reIssueAccessToken(@RequestBody ReissueDto dto) throws RuntimeException {
 
+        log.info("ReIssueDto email="+dto.getUserId()+" refreshToken=" +dto.getRefreshToken());
+
+        return userService.reIssueAccessToken(dto);
     }
 
 

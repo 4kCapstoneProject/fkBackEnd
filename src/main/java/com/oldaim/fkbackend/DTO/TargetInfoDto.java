@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class TargetInfoDTO {
+public class TargetInfoDto {
 
     Long userId;
 
