@@ -4,7 +4,6 @@ import com.oldaim.fkbackend.controller.dto.ImagePathDto;
 import com.oldaim.fkbackend.entity.Image;
 import com.oldaim.fkbackend.entity.enumType.ThumbNail;
 import com.oldaim.fkbackend.entity.information.Information;
-import com.oldaim.fkbackend.entity.information.TargetInfo;
 import com.oldaim.fkbackend.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

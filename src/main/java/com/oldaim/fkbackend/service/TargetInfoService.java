@@ -3,7 +3,6 @@ package com.oldaim.fkbackend.service;
 import com.oldaim.fkbackend.controller.dto.ImagePathDto;
 import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
 import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
-import com.oldaim.fkbackend.entity.Image;
 import com.oldaim.fkbackend.entity.User;
 import com.oldaim.fkbackend.entity.information.TargetInfo;
 import com.oldaim.fkbackend.repository.informationRepository.TargetInfoRepository;
@@ -20,8 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor

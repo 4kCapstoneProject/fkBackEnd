@@ -1,13 +1,10 @@
 package com.oldaim.fkbackend.controller;
 
 import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
-import com.oldaim.fkbackend.entity.information.TargetInfo;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticProvider;
-import com.oldaim.fkbackend.service.ImageService;
 import com.oldaim.fkbackend.service.TargetInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 @RestController
