@@ -12,3 +12,14 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+jwt:
+  secret: cZlsmdpaLksSAdsdmdaskjndasdas1j234214lasdasdasSnadaklsnd242adsadndkanskdskahfbj3123122k
+  access_valid_time: 360000000
+  refresh_valid_time: 10000000000000000
+
+upload:
+    path: "/Users/kimdonggyun/Desktop/bootpicture/"
+
+
+

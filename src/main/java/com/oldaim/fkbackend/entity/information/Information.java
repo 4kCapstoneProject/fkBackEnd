@@ -1,13 +1,15 @@
-package com.oldaim.fkbackend.Entity.Information;
+package com.oldaim.fkbackend.entity.information;
 
-import com.oldaim.fkbackend.Entity.BaseEntity;
-import com.oldaim.fkbackend.Entity.User;
+import com.oldaim.fkbackend.entity.BaseEntity;
+import com.oldaim.fkbackend.entity.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Information extends BaseEntity {
     @Id
@@ -26,4 +28,10 @@ public class Information extends BaseEntity {
     private Long personAge;
 
 
+    public Information(Long id, User user, String personName, Long personAge) {
+        this.id = id;
+        this.user = user;
+        this.personName = personName;
+        this.personAge = personAge;
+    }
 }

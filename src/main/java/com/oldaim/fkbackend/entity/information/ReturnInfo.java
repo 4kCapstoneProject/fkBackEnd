@@ -1,6 +1,6 @@
-package com.oldaim.fkbackend.Entity.Information;
+package com.oldaim.fkbackend.entity.information;
 
-import com.oldaim.fkbackend.Entity.Image;
+import com.oldaim.fkbackend.entity.Image;
 import lombok.Getter;
 
 import javax.persistence.Column;

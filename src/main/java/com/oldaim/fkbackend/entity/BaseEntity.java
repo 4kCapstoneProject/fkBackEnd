@@ -1,4 +1,4 @@
-package com.oldaim.fkbackend.Entity;
+package com.oldaim.fkbackend.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
