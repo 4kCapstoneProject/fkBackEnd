@@ -18,5 +18,8 @@ jwt:
   access_valid_time: 360000000
   refresh_valid_time: 10000000000000000
 
+upload:
+    path: "/Users/kimdonggyun/Desktop/bootpicture/"
+
 
 

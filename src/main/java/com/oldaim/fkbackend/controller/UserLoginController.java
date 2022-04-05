@@ -1,8 +1,8 @@
 package com.oldaim.fkbackend.controller;
 
-import com.oldaim.fkbackend.DTO.ReissueDto;
-import com.oldaim.fkbackend.DTO.UserDto;
-import com.oldaim.fkbackend.Service.UserService;
+import com.oldaim.fkbackend.controller.dto.ReissueDto;
+import com.oldaim.fkbackend.controller.dto.UserDto;
+import com.oldaim.fkbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
