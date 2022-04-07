@@ -19,12 +19,18 @@ repositories {
 }
 
 dependencies {
+
     //DB관련 dependency
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.5'
     runtimeOnly 'com.h2database:h2:2.1.210'
 
+    //Mock 서버 구성 관련 dependency
+    implementation 'org.mock-server:mockserver-netty:5.13.0'
+    implementation 'org.mock-server:mockserver-client-java:5.13.0'
+
     //web관련 dependency
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.5'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:2.6.5'
     developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.5'
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -39,7 +45,10 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
     testImplementation 'com.h2database:h2:2.1.210'
+
 }
+
+
 
 tasks.named('test') {
     useJUnitPlatform()

@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +41,13 @@ public class ImageService {
 
     }
 
+    public List<ImagePathDto> ImageFindAllByTargetId(Long targetId) {
+
+        List<Image> imageList = imageRepository.findAllByTargetId(targetId);
+
+        return imageList.stream().map(this::entityToDto).collect(Collectors.toList());
+    }
+
     // 이미지 DTO -> Entity
     private Image fileToEntity(String fileName, String fullPath, Information info,String thumb){
 
@@ -58,6 +67,7 @@ public class ImageService {
                 .filePath(image.getFilePath())
                 .build();
     }
+
 
 
 }
