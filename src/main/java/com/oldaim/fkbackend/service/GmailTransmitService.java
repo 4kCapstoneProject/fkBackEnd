@@ -15,6 +15,7 @@ import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.Message;
 import com.oldaim.fkbackend.controller.dto.ReturnInfoDto;
 import com.oldaim.fkbackend.entity.User;
+import com.oldaim.fkbackend.repository.informationRepository.ReturnInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,7 @@ import java.util.Properties;
 public class GmailTransmitService {
 
     private final UserService userService;
+    private final ReturnInfoRepository returnInfoRepository;
 
     @Value("${gmail.credential_path}") private String CREDENTIALS_FILE_PATH;
     @Value("${gmail.admin_user_id}") private String ADMIN_USER_ID;
@@ -43,7 +45,7 @@ public class GmailTransmitService {
     private static final List<String> SCOPES = List.of(GmailScopes.GMAIL_SEND, GmailScopes.MAIL_GOOGLE_COM);
     private static final String APPLICATION_NAME = "Gmail API For 4K";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String RETURN_INFO_URL = "http://localhost:8080/api/return/download";
+    private static final String RETURN_INFO_URL = "http://localhost:8080/api/return/view?id=";
 
     public String sendEmailForUser(ReturnInfoDto returnInfoDto, UserDetails userDetails)
             throws GeneralSecurityException, IOException, MessagingException {
@@ -75,7 +77,8 @@ public class GmailTransmitService {
     private String makeBodyText(ReturnInfoDto returnInfoDto){
 
         String bodyPart = returnInfoDto.getPersonName() + " 타겟의 분석이 완료되었습니다." +"\n";
-        String bodyURL = "\n" + RETURN_INFO_URL +"에서 분석 결과를 보실 수 있습니다.";
+
+        String bodyURL = "\n" + RETURN_INFO_URL + returnInfoDto.getReturnPk() +"에서 분석 결과를 보실 수 있습니다.";
 
         return bodyPart + bodyURL;
 

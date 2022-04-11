@@ -1,6 +1,7 @@
 package com.oldaim.fkbackend.controller;
 
 import com.oldaim.fkbackend.controller.dto.ReturnInfoDto;
+import com.oldaim.fkbackend.controller.dto.ReturnWithImageDto;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticProvider;
 import com.oldaim.fkbackend.service.GmailTransmitService;
 import com.oldaim.fkbackend.service.ReturnInfoService;
@@ -35,19 +36,27 @@ public class ReturnInfoController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(jwtAuthenticationProvider
                 .getUserPk(jwtAuthenticationProvider.resolveToken(request)));
 
-        returnInfoService.returnInfoSaveWithImage(returnInfoDto,userDetails,imageFile);
+        Long returnId = returnInfoService.returnInfoSaveWithImage(returnInfoDto,userDetails,imageFile);
+
+        returnInfoDto.setReturnPk(returnId);
 
         return gmailTransmitService.sendEmailForUser(returnInfoDto,userDetails);
 
     }
 
-    @GetMapping(value = "/view")
-    public ResponseEntity viewReturnInfo(@RequestParam(value = "method")String method,
+    @GetMapping(value = "/pagingView")
+    public ResponseEntity pagingViewReturnInfo(@RequestParam(value = "method")String method,
                                      @RequestParam(value = "page")int pageNumber){
 
         return new ResponseEntity<>(returnInfoService.findReturnInfoPagingViewWithImage(method,pageNumber), HttpStatus.OK);
     }
 
+    @GetMapping(value = "view")
+    public ReturnWithImageDto viewReturnInfo(@RequestParam(value = "id")Long id){
+
+        return returnInfoService.findReturnInfoWithImage(id);
+
+    }
 
 
 

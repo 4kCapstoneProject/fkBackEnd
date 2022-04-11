@@ -3,6 +3,7 @@ package com.oldaim.fkbackend.service;
 import com.oldaim.fkbackend.controller.dto.ImagePathDto;
 import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
 import com.oldaim.fkbackend.controller.dto.ReturnInfoDto;
+import com.oldaim.fkbackend.controller.dto.ReturnWithImageDto;
 import com.oldaim.fkbackend.entity.User;
 import com.oldaim.fkbackend.entity.information.ReturnInfo;
 import com.oldaim.fkbackend.repository.informationRepository.ReturnInfoRepository;
@@ -42,12 +43,26 @@ public class ReturnInfoService {
 
     }
 
-    public void returnInfoSaveWithImage(ReturnInfoDto returnInfoDto, UserDetails userDetails, MultipartFile imageFile)
+    public Long returnInfoSaveWithImage(ReturnInfoDto returnInfoDto, UserDetails userDetails, MultipartFile imageFile)
             throws IOException {
 
        ReturnInfo returnInfo = this.ReturnInfoSave( returnInfoDto,userDetails.getUsername());
 
        imageService.imageFileUpload(imageFile,returnInfo,"Able");
+
+       return  returnInfo.getId();
+    }
+
+    public ReturnWithImageDto findReturnInfoWithImage(Long returnInfoId){
+
+       ReturnInfoDto returnInfoDto= entityToDto(returnInfoRepository.findById(returnInfoId).orElseThrow());
+
+       ImagePathDto imageDto = imageService.ImageFindByTargetId(returnInfoId);
+
+       return ReturnWithImageDto.builder()
+               .imagePathDto(imageDto)
+               .returnInfoDto(returnInfoDto)
+               .build();
 
     }
 
