@@ -1,26 +1,30 @@
 package com.oldaim.fkbackend.entity.information;
 
-import com.oldaim.fkbackend.entity.Image;
+import com.oldaim.fkbackend.entity.User;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class ReturnInfo extends Information  {
 
-    @JoinColumn(name = "image_Id")
-    @OneToOne
-    private Image restoreImage;
+    @Column
+    private Double maskOnSimilarity;
 
     @Column
-    private Long similarityFirst;
+    private Double maskOffSimilarity;
 
-    @Column
-    private Long similaritySecond;
-
-
+    @Builder
+    public ReturnInfo(Long id, User user, String personName, Long personAge, Double maskOnSimilarity, Double maskOffSimilarity) {
+        super(id, user, personName, personAge);
+        this.maskOnSimilarity = maskOnSimilarity;
+        this.maskOffSimilarity = maskOffSimilarity;
+    }
 }
+
+

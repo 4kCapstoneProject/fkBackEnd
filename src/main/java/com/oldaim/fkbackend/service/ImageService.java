@@ -20,8 +20,7 @@ import java.util.stream.Collectors;
 public class ImageService {
 
     private final ImageRepository imageRepository;
-    @Value("${upload.path}")
-    private String uploadPath;
+    @Value("${upload.path}") private String uploadPath;
 
     // 이미지 저장
     public void imageFileUpload(MultipartFile file, Information info, String thumb) throws IOException {

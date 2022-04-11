@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+tokens
+tokens/StoredCredential
+tokens/.StoredCredential.swp
