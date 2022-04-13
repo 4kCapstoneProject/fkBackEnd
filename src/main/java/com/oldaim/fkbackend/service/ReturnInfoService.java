@@ -35,7 +35,7 @@ public class ReturnInfoService {
     public ReturnInfo ReturnInfoSave(ReturnInfoDto infoDto, String userId){
 
         User infoOwner = userService.findByUserId(userId)
-                .orElseThrow(()->new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+                .orElseThrow(()->new IllegalArgumentException("인증되지 않은 유저의 접근입니다."));
 
         ReturnInfo returnInfo = dtoToEntity(infoDto,infoOwner);
 

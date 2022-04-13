@@ -32,7 +32,7 @@ public class TargetInfoService {
     public TargetInfo targetInfoSave(TargetInfoDto infoDTO, String userId){
 
         User infoOwner = userService.findByUserId(userId)
-                .orElseThrow(()->new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+                .orElseThrow(()->new IllegalArgumentException("인증되지 않은 유저의 접근입니다."));
 
         TargetInfo targetInfo = dtoToEntity(infoDTO,infoOwner);
 
@@ -40,7 +40,7 @@ public class TargetInfoService {
 
     }
 
-    public void targetInfoSaveWithImage(TargetInfoDto infoDto, UserDetails userDetails, List<MultipartFile> imageFileList, int thumbnailNumber) throws IOException {
+    public String targetInfoSaveWithImage(TargetInfoDto infoDto, UserDetails userDetails, List<MultipartFile> imageFileList, int thumbnailNumber) throws IOException {
 
         TargetInfo targetInfo = this.targetInfoSave( infoDto, userDetails.getUsername());
 
@@ -55,6 +55,8 @@ public class TargetInfoService {
                 imageService.imageFileUpload(file, targetInfo, "Unable");
             }
         }
+
+        return targetInfo.getPersonName();
     }
 
     public PagingInformationDto<Object> findTargetInfoPagingViewWithImage(String sortMethod, int pageNumber){

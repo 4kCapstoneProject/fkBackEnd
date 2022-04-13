@@ -15,11 +15,14 @@ spring:
 
 jwt:
   secret: cZlsmdpaLksSAdsdmdaskjndasdas1j234214lasdasdasSnadaklsnd242adsadndkanskdskahfbj3123122k
-  access_valid_time: 360000000
-  refresh_valid_time: 10000000000000000
+  access_valid_time: 1200000
+  refresh_valid_time: 1209600033
 
 upload:
     path: "/Users/kimdonggyun/Desktop/bootpicture/"
 
-
+gmail:
+  credential_path: "/Users/kimdonggyun/Desktop/credit/credentials.json"
+  admin_user_id: "dgk0911@gmail.com"
+  token_directory_path: "tokens"
 

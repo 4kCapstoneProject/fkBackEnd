@@ -1,12 +1,11 @@
 package com.oldaim.fkbackend.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.oldaim.fkbackend.exceptionhandler.JwtValidationException;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -88,10 +87,19 @@ public class JwtAuthenticProvider {
     // 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
+                Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
+
+        } catch (ExpiredJwtException e) {
+
+            throw new JwtValidationException("Jwt is expired", e ,HttpStatus.REQUEST_TIMEOUT);
+
+        } catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e)
+        {
+            throw new JwtValidationException("JWT's type or value is invalid", e, HttpStatus.UNAUTHORIZED);
+        } catch (SignatureException e) {
+            // signature이 유효하지 않음
+            throw new JwtValidationException("JWT's signature is not invalid", e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return true;
     }
 }
