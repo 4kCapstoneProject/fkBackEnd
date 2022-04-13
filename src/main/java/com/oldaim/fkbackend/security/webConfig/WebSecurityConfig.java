@@ -1,5 +1,6 @@
 package com.oldaim.fkbackend.security.webConfig;
 
+import com.oldaim.fkbackend.security.jwt.CustomFilterExceptionHandler;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticProvider;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticationEntryPoint;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticationFilter;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticProvider jwtAuthenticationProvider;
+    private final CustomFilterExceptionHandler customFilterExceptionHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -46,8 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http
-                     .addFilterBefore(new JwtAuthenticationFilter(jwtAuthenticationProvider),
-                             UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtAuthenticationProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customFilterExceptionHandler,JwtAuthenticationFilter.class);
 
 
 

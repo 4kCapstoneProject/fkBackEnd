@@ -1,13 +1,15 @@
 package com.oldaim.fkbackend.controller;
 
 import com.oldaim.fkbackend.controller.dto.ReissueDto;
+import com.oldaim.fkbackend.controller.dto.TokenResponseDto;
 import com.oldaim.fkbackend.controller.dto.UserDto;
 import com.oldaim.fkbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,32 +21,34 @@ public class UserLoginController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public String register(@RequestBody UserDto userDTO){
+    public ResponseEntity<String> register(@Valid @RequestBody UserDto userDTO){
 
         String userId = userService.registerUser(userDTO);
 
-        return userId +" "+ "님이 회원가입 하셨습니다.";
+        String msg =  userId +" "+ "님이 회원가입 하셨습니다.";
+
+        return ResponseEntity.ok(msg);
 
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDto userDTO, HttpServletResponse response){
+    public ResponseEntity<TokenResponseDto> login(@Valid @RequestBody UserDto userDTO){
 
 
-        String accessToken = userService.loginUser(userDTO);
+      TokenResponseDto dto = userService.loginUser(userDTO);
 
-        response.setHeader("ACCESS-TOKEN", accessToken);
-
-        return "로그인이 성공하였습니다.";
+      return ResponseEntity.ok(dto);
 
     }
 
-    @PostMapping("/reissueactoken")
-    public String reIssueAccessToken(@RequestBody ReissueDto dto) throws RuntimeException {
+    @PostMapping("/reissueToken")
+    public ResponseEntity<String> reIssueAccessToken(@RequestBody ReissueDto dto) throws RuntimeException {
 
         log.info("ReIssueDto email="+dto.getUserId()+" refreshToken=" +dto.getRefreshToken());
 
-        return userService.reIssueAccessToken(dto);
+        String accessToken = userService.reIssueAccessToken(dto);
+
+        return ResponseEntity.ok(accessToken);
     }
 
 

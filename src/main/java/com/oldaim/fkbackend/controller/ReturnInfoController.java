@@ -1,12 +1,12 @@
 package com.oldaim.fkbackend.controller;
 
+import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
 import com.oldaim.fkbackend.controller.dto.ReturnInfoDto;
 import com.oldaim.fkbackend.controller.dto.ReturnWithImageDto;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticProvider;
 import com.oldaim.fkbackend.service.GmailTransmitService;
 import com.oldaim.fkbackend.service.ReturnInfoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,7 +29,7 @@ public class ReturnInfoController {
     private final GmailTransmitService gmailTransmitService;
 
     @PostMapping("/download")
-    public String returnInfoFromModel(@RequestPart MultipartFile imageFile,
+    public ResponseEntity<String> returnInfoFromModel(@RequestPart MultipartFile imageFile,
                                     @RequestPart ReturnInfoDto returnInfoDto,
                                     HttpServletRequest request) throws IOException, MessagingException, GeneralSecurityException {
 
@@ -40,22 +40,23 @@ public class ReturnInfoController {
 
         returnInfoDto.setReturnPk(returnId);
 
-        return gmailTransmitService.sendEmailForUser(returnInfoDto,userDetails);
+        String msg = gmailTransmitService.sendEmailForUser(returnInfoDto,userDetails);
 
+        return ResponseEntity.ok(msg);
     }
 
     @GetMapping(value = "/pagingView")
-    public ResponseEntity pagingViewReturnInfo(@RequestParam(value = "method")String method,
-                                     @RequestParam(value = "page")int pageNumber){
+    public ResponseEntity<PagingInformationDto> pagingViewReturnInfo(@RequestParam(value = "method")String method,
+                                                                     @RequestParam(value = "page")int pageNumber){
 
-        return new ResponseEntity<>(returnInfoService.findReturnInfoPagingViewWithImage(method,pageNumber), HttpStatus.OK);
+        return ResponseEntity.ok(returnInfoService.findReturnInfoPagingViewWithImage(method, pageNumber));
     }
 
     @GetMapping(value = "view")
-    public ReturnWithImageDto viewReturnInfo(@RequestParam(value = "id")Long id){
+    public ResponseEntity<ReturnWithImageDto> viewReturnInfo(@RequestParam(value = "id")Long id){
 
-        return returnInfoService.findReturnInfoWithImage(id);
 
+        return ResponseEntity.ok(returnInfoService.findReturnInfoWithImage(id));
     }
 
 

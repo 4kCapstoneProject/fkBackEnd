@@ -15,7 +15,6 @@ import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.Message;
 import com.oldaim.fkbackend.controller.dto.ReturnInfoDto;
 import com.oldaim.fkbackend.entity.User;
-import com.oldaim.fkbackend.repository.informationRepository.ReturnInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +35,6 @@ import java.util.Properties;
 public class GmailTransmitService {
 
     private final UserService userService;
-    private final ReturnInfoRepository returnInfoRepository;
 
     @Value("${gmail.credential_path}") private String CREDENTIALS_FILE_PATH;
     @Value("${gmail.admin_user_id}") private String ADMIN_USER_ID;
@@ -69,7 +67,7 @@ public class GmailTransmitService {
     private String returnUserEmail(UserDetails userDetails){
 
         User user = userService.findByUserId(userDetails.getUsername())
-                .orElseThrow(()->new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+                .orElseThrow(()->new IllegalArgumentException("Unauthorized user error"));
 
         return user.getUserEmail();
     }

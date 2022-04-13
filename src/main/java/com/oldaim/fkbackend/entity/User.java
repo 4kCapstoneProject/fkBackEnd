@@ -24,13 +24,13 @@ public class User extends BaseEntity implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String userId;
 
     @Column
     private String userPassword;
 
-    @Column
+    @Column(unique = true)
     private String userEmail;
 
     @Column

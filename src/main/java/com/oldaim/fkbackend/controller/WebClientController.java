@@ -2,6 +2,7 @@ package com.oldaim.fkbackend.controller;
 
 import com.oldaim.fkbackend.service.WebClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,9 +18,10 @@ public class WebClientController {
     private final WebClientService webClientService;
 
     @GetMapping("/transmit")
-    public String transmitToModel(@RequestParam(value = "targetId")Long targetId) throws IOException {
+    public ResponseEntity<String> transmitToModel(@RequestParam(value = "targetId")Long targetId) throws IOException {
 
-        return webClientService.transmitImageToModel(targetId);
+        String msg = webClientService.transmitImageToModel(targetId);
 
+        return ResponseEntity.ok(msg);
     }
 }
