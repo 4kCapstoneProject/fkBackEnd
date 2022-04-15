@@ -64,7 +64,8 @@ public class UserService {
 
     public String reIssueAccessToken(ReissueDto dto) throws RuntimeException {
 
-        User user = userRepository.findByUserId(dto.getUserId()).orElseThrow(NullPointerException::new);
+        User user = userRepository.findByUserId(dto.getUserId())
+                .orElseThrow(()->new IllegalArgumentException("유저가 존재하지 않습니다."));
 
         if (user.getRefreshToken() == null || !jwtAuthenticationProvider.validateToken(dto.getRefreshToken())) {
             throw new RuntimeException("유효하지 않은 토큰입니다.");

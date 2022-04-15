@@ -4,12 +4,14 @@ import com.oldaim.fkbackend.controller.dto.ReissueDto;
 import com.oldaim.fkbackend.controller.dto.TokenResponseDto;
 import com.oldaim.fkbackend.controller.dto.UserDto;
 import com.oldaim.fkbackend.service.UserService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,13 +44,17 @@ public class UserLoginController {
     }
 
     @PostMapping("/reissueToken")
-    public ResponseEntity<String> reIssueAccessToken(@RequestBody ReissueDto dto) throws RuntimeException {
+    public ResponseEntity<Map<String,String>> reIssueAccessToken(@RequestBody ReissueDto dto) throws RuntimeException {
 
         log.info("ReIssueDto email="+dto.getUserId()+" refreshToken=" +dto.getRefreshToken());
 
         String accessToken = userService.reIssueAccessToken(dto);
 
-        return ResponseEntity.ok(accessToken);
+        Map<String, String> map = Map.of(
+                "accessToken",accessToken
+        );
+
+        return ResponseEntity.ok(map);
     }
 
 

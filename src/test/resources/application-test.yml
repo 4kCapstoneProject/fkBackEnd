@@ -24,3 +24,8 @@ jwt:
 
 upload:
   path: "/Users/kimdonggyun/Desktop/bootpicture/"
+
+gmail:
+  credential_path: "/Users/kimdonggyun/Desktop/credit/credentials.json"
+  admin_user_id: "dgk0911@gmail.com"
+  token_directory_path: "tokens"
