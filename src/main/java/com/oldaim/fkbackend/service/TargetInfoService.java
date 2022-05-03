@@ -29,35 +29,17 @@ public class TargetInfoService {
     private final TargetInfoRepository targetInfoRepository;
     private final ImageService imageService;
 
-    public TargetInfo targetInfoSave(TargetInfoDto infoDTO, String userId){
+    public Long targetInfoSave(TargetInfoDto infoDTO, String userId){
 
         User infoOwner = userService.findByUserId(userId)
                 .orElseThrow(()->new IllegalArgumentException("인증되지 않은 유저의 접근입니다."));
 
         TargetInfo targetInfo = dtoToEntity(infoDTO,infoOwner);
 
-        return  targetInfoRepository.save(targetInfo);
+        return  targetInfoRepository.save(targetInfo).getId();
 
     }
 
-    public String targetInfoSaveWithImage(TargetInfoDto infoDto, UserDetails userDetails, List<MultipartFile> imageFileList, int thumbnailNumber) throws IOException {
-
-        TargetInfo targetInfo = this.targetInfoSave( infoDto, userDetails.getUsername());
-
-        for (int i = 0, imageFileListSize = imageFileList.size(); i < imageFileListSize; i++) {
-
-            MultipartFile file = imageFileList.get(i);
-
-            if(i == thumbnailNumber -1) {
-                imageService.imageFileUpload(file, targetInfo, "Able");
-            }
-            else{
-                imageService.imageFileUpload(file, targetInfo, "Unable");
-            }
-        }
-
-        return targetInfo.getPersonName();
-    }
 
     public PagingInformationDto<Object> findTargetInfoPagingViewWithImage(String sortMethod, int pageNumber){
 

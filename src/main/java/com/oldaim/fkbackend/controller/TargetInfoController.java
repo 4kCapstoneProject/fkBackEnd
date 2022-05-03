@@ -3,6 +3,7 @@ package com.oldaim.fkbackend.controller;
 import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
 import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticProvider;
+import com.oldaim.fkbackend.service.ImageService;
 import com.oldaim.fkbackend.service.TargetInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,19 +28,30 @@ public class TargetInfoController {
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticProvider jwtAuthenticationProvider;
 
-    @PostMapping(value = "/upload",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<String> uploadTarget(@RequestPart TargetInfoDto targetInfoDto, @RequestPart List<MultipartFile> imageFileList,
-                                               @RequestParam(value = "imageThumbNum")int thumbnailNumber,
-                                               HttpServletRequest request) throws IOException {
+    private final ImageService imageService;
+
+
+    @PostMapping(value = "/uploadTargetInfo")
+    public ResponseEntity<Long> uploadTarget(@RequestBody TargetInfoDto targetInfoDto, HttpServletRequest request){
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(jwtAuthenticationProvider
                 .getUserPk(jwtAuthenticationProvider.resolveToken(request)));
 
-       String personName = targetInfoService.targetInfoSaveWithImage(targetInfoDto,userDetails,imageFileList,thumbnailNumber);
+        Long targetId = targetInfoService.targetInfoSave(targetInfoDto,userDetails.getUsername());
 
-       String msg = personName + " " + "의 정보를 저장했습니다.";
+        return ResponseEntity.ok(targetId);
+    }
+
+    @PostMapping(value = "/uploadImage")
+    public ResponseEntity<String> uploadImage(@RequestParam List<MultipartFile> imageFileList,
+                                              @RequestParam Long targetId, @RequestParam int thumbNum) throws IOException {
+
+        imageService.imageListFileUpload(imageFileList,targetId,thumbNum);
+
+        String msg = "메세지를 잘 전달 하였습니다.";
 
        return ResponseEntity.ok(msg);
+       
     }
 
     @GetMapping(value = "/view")

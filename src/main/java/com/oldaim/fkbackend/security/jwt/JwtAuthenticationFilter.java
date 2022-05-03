@@ -17,7 +17,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtAuthenticProvider jwtAuthenticProvider;
 
     private final static String[] ACCEPTED_PATHS
-            = new String[]{"/api/auth/register","/api/auth/login"};
+            = new String[]{"/api/auth/register","/api/auth/login","/api/auth/reissueToken"};
 
     public JwtAuthenticationFilter(JwtAuthenticProvider provider) {
         jwtAuthenticProvider = provider;
@@ -25,6 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("필터 동작전");
         if(!isAcceptedPath(request.getRequestURI())) {
             String token = jwtAuthenticProvider.resolveToken(request);
 

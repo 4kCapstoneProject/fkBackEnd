@@ -1,9 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/fkBackEnd
+    url: jdbc:h2:mem:testdb
     username: oldaim
     password:
     driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
 
   jpa:
     hibernate:
@@ -26,3 +30,10 @@ gmail:
   admin_user_id: "dgk0911@gmail.com"
   token_directory_path: "tokens"
 
+logging:
+    level:
+       org:
+          springframework:
+            web:
+             filter:
+                CommonsRequestLoggingFilter: DEBUG

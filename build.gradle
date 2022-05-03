@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.6.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.asciidoctor.jvm.convert' version "3.3.2"
     id 'java'
 }
 
@@ -12,16 +13,33 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
     mavenCentral()
 }
 
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+asciidoctor{
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+}
+
+
 dependencies {
 
     //DB관련 dependency
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.6'
     runtimeOnly 'com.h2database:h2:2.1.210'
 
     //Mock 서버 구성 관련 dependency
@@ -36,25 +54,26 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
     //로그인 인증 관련 dependency
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.5'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.6'
     implementation group : 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
     //Gmail 관련 dependency
-    implementation 'com.google.api-client:google-api-client:1.33.0'
-    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.32.1'
-    implementation 'com.google.apis:google-api-services-gmail:v1-rev20211108-1.32.1'
+    implementation 'com.google.api-client:google-api-client:1.33.4'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.33.2'
+    implementation 'com.google.apis:google-api-services-gmail:v1-rev20220404-1.32.1'
 
     //test관련 dependency
     testImplementation 'org.springframework.security:spring-security-test:5.6.2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.5'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.6'
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
     testImplementation 'com.h2database:h2:2.1.210'
 
+    //spring docs
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.6.RELEASE'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc:2.0.6.RELEASE'
+
 }
 
 
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
