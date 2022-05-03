@@ -94,7 +94,7 @@ class TargetInfoControllerTest {
         accessToken = tokenResponseDto.getAccessToken();
 
     }
-
+   /*
     @Test
     @DisplayName("타겟과 이미지를 업로드 해서 저장하는 테스트")
     public void 타겟_이미지_저장테스트() throws Exception{
@@ -230,6 +230,6 @@ class TargetInfoControllerTest {
 
     }
 
-
+   */
 
 }
