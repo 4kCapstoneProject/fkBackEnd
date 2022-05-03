@@ -4,7 +4,9 @@ import com.oldaim.fkbackend.controller.dto.ImagePathDto;
 import com.oldaim.fkbackend.entity.Image;
 import com.oldaim.fkbackend.entity.enumType.ThumbNail;
 import com.oldaim.fkbackend.entity.information.Information;
+import com.oldaim.fkbackend.entity.information.TargetInfo;
 import com.oldaim.fkbackend.repository.ImageRepository;
+import com.oldaim.fkbackend.repository.informationRepository.TargetInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,26 @@ import java.util.stream.Collectors;
 public class ImageService {
 
     private final ImageRepository imageRepository;
+    private final TargetInfoRepository targetInfoRepository;
+
     @Value("${upload.path}") private String uploadPath;
+
+    public void imageListFileUpload(List<MultipartFile> imageFileList, Long targetId, int thumbnailNumber) throws IOException {
+
+        TargetInfo targetInfo = targetInfoRepository.findById(targetId)
+                .orElseThrow(()->new IllegalArgumentException("유저가 존재하지 않습니다."));
+
+        for (int i = 0, imageFileListSize = imageFileList.size(); i < imageFileListSize; i++) {
+
+            MultipartFile file = imageFileList.get(i);
+
+            if (i == thumbnailNumber - 1) {
+                this.imageFileUpload(file, targetInfo, "Able");
+            } else {
+                this.imageFileUpload(file, targetInfo, "Unable");
+            }
+        }
+    }
 
     // 이미지 저장
     public void imageFileUpload(MultipartFile file, Information info, String thumb) throws IOException {
