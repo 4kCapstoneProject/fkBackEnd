@@ -184,7 +184,7 @@ class TargetInfoControllerTest {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername("oldaim");
 
-            targetInfoService.targetInfoSaveWithImage(targetInfoDto,userDetails,imageList,1);
+          //  targetInfoService.targetInfoSaveWithImage(targetInfoDto,userDetails,imageList,1);
 
         }
 
