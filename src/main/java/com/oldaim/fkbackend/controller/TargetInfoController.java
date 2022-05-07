@@ -61,4 +61,13 @@ public class TargetInfoController {
         return ResponseEntity.ok(targetInfoService.findTargetInfoPagingViewWithImage(method, pageNumber));
     }
 
+    @PostMapping(value = "/upload")
+    public void testMethod(@RequestPart List<MultipartFile> imageFileList , @RequestPart TargetInfoDto targetInfoDto){
+
+        log.info(imageFileList.get(0).getOriginalFilename());
+
+        log.info(targetInfoDto.getPersonName());
+
+    }
+
 }
