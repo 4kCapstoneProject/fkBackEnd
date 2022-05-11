@@ -11,6 +11,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedMethods("POST","GET")
-                .allowedOrigins("http://211.201.72.35:3000");
+                .allowedOrigins("http://frontend:3000");
     }
 }
