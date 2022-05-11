@@ -9,4 +9,8 @@ import org.springframework.stereotype.Service;
 public class TestService {
 
     private final TargetInfoService targetInfoService;
+
+    public void testMethod(){
+        
+    }
 }
