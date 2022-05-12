@@ -23,7 +23,7 @@ jwt:
   refresh_valid_time: 1209600033
 
 upload:
-    path: "/Users/kimdonggyun/Desktop/bootpicture/"
+    path: "/home/oldaim/fkprojectpicture"
 
 gmail:
   credential_path: "/Users/kimdonggyun/Desktop/credit/credentials.json"
