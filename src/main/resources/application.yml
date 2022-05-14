@@ -23,7 +23,7 @@ jwt:
   refresh_valid_time: 1209600033
 
 upload:
-    path: "/home/oldaim/fkprojectpicture"
+    path: "/var/lib/docker/volumes/fkproject-volume/_data/fkprojectpicture/"
 
 gmail:
   credential_path: "/Users/kimdonggyun/Desktop/credit/credentials.json"
