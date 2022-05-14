@@ -74,11 +74,12 @@ public class TargetInfoService {
 
                 TargetInfoDto targetInfoDto = entityToDto(boardList.getContent().get(i));
 
-                ImagePathDto dto = imageService.ImageFindByTargetId(targetInfoDto.getTargetPk());
+                List<ImagePathDto> dtoList = imageService.ImageFindAllByTargetId(targetInfoDto.getTargetPk());
 
                 targetDtoList.add(targetInfoDto);
 
-                imageDtoList.add(dto);
+                imageDtoList.addAll(dtoList);
+
 
             }
 
