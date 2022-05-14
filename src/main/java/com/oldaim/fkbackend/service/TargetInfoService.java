@@ -3,6 +3,7 @@ package com.oldaim.fkbackend.service;
 import com.oldaim.fkbackend.controller.dto.ImagePathDto;
 import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
 import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
+import com.oldaim.fkbackend.entity.Image;
 import com.oldaim.fkbackend.entity.User;
 import com.oldaim.fkbackend.entity.information.TargetInfo;
 import com.oldaim.fkbackend.repository.informationRepository.TargetInfoRepository;
@@ -12,13 +13,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +40,16 @@ public class TargetInfoService {
 
     }
 
+    public boolean targetInfoDataExist(String userId){
 
-    public PagingInformationDto<Object> findTargetInfoPagingViewWithImage(String sortMethod, int pageNumber){
+       List<TargetInfo> existList= targetInfoRepository.findAllByTargetId(userId);
+
+        return !existList.isEmpty();
+
+    }
+
+
+    public PagingInformationDto<Object> findTargetInfoPagingViewWithImage(String sortMethod, int pageNumber, String userId){
 
 
         Sort sort = Sort.by(sortMethod).ascending();
@@ -62,13 +70,17 @@ public class TargetInfoService {
 
             log.info(boardList.getContent().get(i));
 
-            TargetInfoDto targetInfoDto = entityToDto(boardList.getContent().get(i));
+            if(Objects.equals(boardList.getContent().get(i).getUser().getUserId(), userId)) {
 
-            ImagePathDto dto= imageService.ImageFindByTargetId(targetInfoDto.getTargetPk());
+                TargetInfoDto targetInfoDto = entityToDto(boardList.getContent().get(i));
 
-            targetDtoList.add(targetInfoDto);
+                ImagePathDto dto = imageService.ImageFindByTargetId(targetInfoDto.getTargetPk());
 
-            imageDtoList.add(dto);
+                targetDtoList.add(targetInfoDto);
+
+                imageDtoList.add(dto);
+
+            }
 
         }
 

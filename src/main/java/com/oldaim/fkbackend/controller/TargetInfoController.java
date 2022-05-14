@@ -54,11 +54,30 @@ public class TargetInfoController {
        
     }
 
+    @GetMapping(value = "/exist")
+    public ResponseEntity<Boolean> existTarget(HttpServletRequest request){
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtAuthenticationProvider
+                .getUserPk(jwtAuthenticationProvider.resolveToken(request)));
+
+
+       Boolean existData = targetInfoService.targetInfoDataExist(userDetails.getUsername());
+
+       return ResponseEntity.ok(existData);
+    }
+
     @GetMapping(value = "/view")
     public ResponseEntity<PagingInformationDto> viewTarget(@RequestParam(value = "method")String method,
-                                                           @RequestParam(value = "page")int pageNumber){
+                                                           @RequestParam(value = "page")int pageNumber,
+                                                           HttpServletRequest request){
 
-        return ResponseEntity.ok(targetInfoService.findTargetInfoPagingViewWithImage(method, pageNumber));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtAuthenticationProvider
+                .getUserPk(jwtAuthenticationProvider.resolveToken(request)));
+
+
+
+        return ResponseEntity.ok(targetInfoService.findTargetInfoPagingViewWithImage
+                (method, pageNumber,userDetails.getUsername()));
     }
 
     @PostMapping(value = "/upload")

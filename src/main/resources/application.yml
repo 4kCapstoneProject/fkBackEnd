@@ -19,7 +19,7 @@ spring:
 
 jwt:
   secret: cZlsmdpaLksSAdsdmdaskjndasdas1j234214lasdasdasSnadaklsnd242adsadndkanskdskahfbj3123122k
-  access_valid_time: 1200000
+  access_valid_time: 12000000000000
   refresh_valid_time: 1209600033
 
 upload:
