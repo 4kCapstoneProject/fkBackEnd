@@ -68,6 +68,10 @@ public class ImageService {
         return imageList.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 
+    public void ImageDeleteByTargetId(Long targetId){
+        imageRepository.deleteAllByTargetId(targetId);
+    }
+
     // 이미지 DTO -> Entity
     private Image fileToEntity(String fileName, String fullPath, Information info,String thumb){
 

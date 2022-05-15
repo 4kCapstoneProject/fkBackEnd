@@ -42,7 +42,7 @@ public class TargetInfoService {
 
     public boolean targetInfoDataExist(String userId){
 
-       List<TargetInfo> existList= targetInfoRepository.findAllByTargetId(userId);
+       List<TargetInfo> existList= targetInfoRepository.findAllToExist(userId);
 
         return !existList.isEmpty();
 
@@ -56,7 +56,7 @@ public class TargetInfoService {
 
         Pageable pageable = PageRequest.of(pageNumber - 1,5,sort);
 
-        Page<TargetInfo> boardList = targetInfoRepository.findAll(pageable);
+        Page<TargetInfo> boardList = targetInfoRepository.findAllByUserIdPageable(userId,pageable);
 
         List<Object> targetDtoList = new ArrayList<>();
 
@@ -70,18 +70,13 @@ public class TargetInfoService {
 
             log.info(boardList.getContent().get(i));
 
-            if(Objects.equals(boardList.getContent().get(i).getUser().getUserId(), userId)) {
+            TargetInfoDto targetInfoDto = entityToDto(boardList.getContent().get(i));
 
-                TargetInfoDto targetInfoDto = entityToDto(boardList.getContent().get(i));
+            List<ImagePathDto> dtoList = imageService.ImageFindAllByTargetId(targetInfoDto.getTargetPk());
 
-                List<ImagePathDto> dtoList = imageService.ImageFindAllByTargetId(targetInfoDto.getTargetPk());
+            targetDtoList.add(targetInfoDto);
 
-                targetDtoList.add(targetInfoDto);
-
-                imageDtoList.addAll(dtoList);
-
-
-            }
+            imageDtoList.addAll(dtoList);
 
         }
 

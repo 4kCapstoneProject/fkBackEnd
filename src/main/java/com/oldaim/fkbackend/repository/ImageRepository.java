@@ -17,4 +17,7 @@ public interface ImageRepository extends JpaRepository<Image,Long> {
 
     @Query("SELECT i FROM Image i WHERE i.information.id =?1")
     List<Image> findAllByTargetId(Long targetId) throws NoSuchElementException;
+    @Query("DELETE FROM Image i WHERE i.information.id =?1 ")
+    void deleteAllByTargetId(Long targetId);
+
 }
