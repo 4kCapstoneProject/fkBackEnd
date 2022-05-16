@@ -1,6 +1,7 @@
 package com.oldaim.fkbackend.service;
 
 import com.oldaim.fkbackend.controller.dto.ImagePathDto;
+import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -39,6 +40,16 @@ public class WebClientService {
                 .post()
                 .uri("/fileUpload")
                 .bodyValue(builder.build())
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
+
+    public String transmitInformationToModel(TargetInfoDto targetInfoDto){
+        return client
+                .post()
+                .uri("/dataUpload")
+                .bodyValue(targetInfoDto)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();

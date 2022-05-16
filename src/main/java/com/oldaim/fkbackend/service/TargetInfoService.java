@@ -54,7 +54,7 @@ public class TargetInfoService {
 
         Sort sort = Sort.by(sortMethod).ascending();
 
-        Pageable pageable = PageRequest.of(pageNumber - 1,5,sort);
+        Pageable pageable = PageRequest.of(pageNumber - 1,3,sort);
 
         Page<TargetInfo> boardList = targetInfoRepository.findAllByUserIdPageable(userId,pageable);
 
