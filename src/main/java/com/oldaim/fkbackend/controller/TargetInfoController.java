@@ -1,6 +1,7 @@
 package com.oldaim.fkbackend.controller;
 
 import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
+import com.oldaim.fkbackend.controller.dto.SearchResultDto;
 import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticProvider;
 import com.oldaim.fkbackend.service.ImageService;
@@ -66,8 +67,24 @@ public class TargetInfoController {
        return ResponseEntity.ok(existData);
     }
 
+    @GetMapping(value = "/delete")
+    public ResponseEntity<Long> deleteTarget(@RequestParam(value = "targetId") Long targetId){
+
+       Long deleteEntityId =  targetInfoService.targetDelete(targetId);
+
+       return ResponseEntity.ok(deleteEntityId);
+
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<SearchResultDto<Object>> searchTarget(@RequestParam(value = "search") String searchString){
+
+        return ResponseEntity.ok(targetInfoService.searchTargetInfo(searchString));
+
+    }
+
     @GetMapping(value = "/view")
-    public ResponseEntity<PagingInformationDto> viewTarget(@RequestParam(value = "method")String method,
+    public ResponseEntity<PagingInformationDto<Object>> viewTarget(@RequestParam(value = "method")String method,
                                                            @RequestParam(value = "page")int pageNumber,
                                                            HttpServletRequest request){
 

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +53,21 @@ public class ImageService {
 
         file.transferTo(new File(fullPath));
         imageRepository.save(fileToEntity(fileName,fullPath,info,thumb));
+
+    }
+
+    public void imageByteFileUpload(byte[] fileData, Information info, String thumb) throws IOException {
+
+            String fileName = "uploadFile"+info.getId()+".png";
+            String filePath = uploadPath + fileName;
+
+            File imageFile = new File(filePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+            fileOutputStream.write(fileData);
+            fileOutputStream.close();
+
+            imageRepository.save(fileToEntity(fileName,filePath,info,thumb));
+
 
     }
 

@@ -1,12 +1,11 @@
 package com.oldaim.fkbackend.service;
 
-import com.oldaim.fkbackend.controller.dto.ImagePathDto;
-import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
-import com.oldaim.fkbackend.controller.dto.ReturnInfoDto;
-import com.oldaim.fkbackend.controller.dto.ReturnWithImageDto;
+import com.oldaim.fkbackend.controller.dto.*;
 import com.oldaim.fkbackend.entity.User;
 import com.oldaim.fkbackend.entity.information.ReturnInfo;
+import com.oldaim.fkbackend.entity.information.TargetInfo;
 import com.oldaim.fkbackend.repository.informationRepository.ReturnInfoRepository;
+import com.oldaim.fkbackend.repository.informationRepository.TargetInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,43 +26,50 @@ import java.util.List;
 public class ReturnInfoService {
 
     private final UserService userService;
-
     private final ReturnInfoRepository returnInfoRepository;
-
     private final ImageService imageService;
+    private final TargetInfoRepository targetInfoRepository;
+    private final WebClientService webClientService;
 
-    public ReturnInfo ReturnInfoSave(ReturnInfoDto infoDto, String userId){
+    public Long ReturnInfoSave(TransmitModelDto transmitModelDto, String userId){
 
         User infoOwner = userService.findByUserId(userId)
                 .orElseThrow(()->new IllegalArgumentException("인증되지 않은 유저의 접근입니다."));
 
+        TargetInfo targetInfo = targetInfoRepository.findById(transmitModelDto.getTargetPk())
+                .orElseThrow(()->new IllegalArgumentException("타겟 정보가 유효하지 않습니다."));;
+
+        ReturnInfoDto infoDto = ReturnInfoDto.builder()
+                .personAge(targetInfo.getPersonAge())
+                .personName(targetInfo.getPersonName())
+                .offSimilarity(transmitModelDto.getOffSimilarity())
+                .onSimilarity(transmitModelDto.getOnSimilarity())
+                .build();
+
         ReturnInfo returnInfo = dtoToEntity(infoDto,infoOwner);
 
-        return returnInfoRepository.save(returnInfo);
+        return returnInfoRepository.save(returnInfo).getId();
 
     }
 
-    public Long returnInfoSaveWithImage(ReturnInfoDto returnInfoDto, UserDetails userDetails, MultipartFile imageFile)
-            throws IOException {
 
-       ReturnInfo returnInfo = this.ReturnInfoSave( returnInfoDto,userDetails.getUsername());
+    public ReturnInfo findReturnInfo(Long returnInfoId) {
 
-       imageService.imageFileUpload(imageFile,returnInfo,"Able");
+      return  returnInfoRepository.findById(returnInfoId)
+             .orElseThrow(()->new IllegalArgumentException("타겟 정보가 유효하지 않습니다."));
 
-       return  returnInfo.getId();
     }
+    public void transmitToModelAndSaveInfo(String userName ,Long targetId) throws IOException {
 
-    public ReturnWithImageDto findReturnInfoWithImage(Long returnInfoId){
+        byte[] fileDate = webClientService.transmitImageToModel(targetId);
 
-       ReturnInfoDto returnInfoDto= entityToDto(returnInfoRepository.findById(returnInfoId).orElseThrow());
+        TransmitModelDto transmitModelDto = webClientService.transmitInformationToModel();
 
-       ImagePathDto imageDto = imageService.ImageFindByTargetId(returnInfoId);
+        transmitModelDto.setTargetPk(targetId);
 
-       return ReturnWithImageDto.builder()
-               .imagePathDto(imageDto)
-               .returnInfoDto(returnInfoDto)
-               .build();
+        Long returnId = this.ReturnInfoSave(transmitModelDto,userName);
 
+        imageService.imageByteFileUpload(fileDate , this.findReturnInfo(returnId),"Able");
     }
 
     public PagingInformationDto<Object> findReturnInfoPagingViewWithImage(String sortMethod, int pageNumber){

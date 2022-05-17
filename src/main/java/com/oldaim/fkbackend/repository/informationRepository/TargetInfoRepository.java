@@ -21,5 +21,6 @@ public interface TargetInfoRepository extends JpaRepository<TargetInfo,Long> {
     @Query("SELECT t FROM TargetInfo t WHERE t.user.userId = ?1")
     Page<TargetInfo> findAllByUserIdPageable(String userId, Pageable pageable);
 
-
+    @Query("SELECT t FROM TargetInfo t WHERE t.personName = ?1")
+    List<TargetInfo> findAllByPersonName(String searchString);
 }

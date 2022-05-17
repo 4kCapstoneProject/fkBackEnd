@@ -2,8 +2,8 @@ package com.oldaim.fkbackend.service;
 
 import com.oldaim.fkbackend.controller.dto.ImagePathDto;
 import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
+import com.oldaim.fkbackend.controller.dto.SearchResultDto;
 import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
-import com.oldaim.fkbackend.entity.Image;
 import com.oldaim.fkbackend.entity.User;
 import com.oldaim.fkbackend.entity.information.TargetInfo;
 import com.oldaim.fkbackend.repository.informationRepository.TargetInfoRepository;
@@ -16,9 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +47,41 @@ public class TargetInfoService {
 
     }
 
+    public Long targetDelete(Long targetId){
+
+        imageService.ImageDeleteByTargetId(targetId);
+
+        targetInfoRepository.deleteById(targetId);
+
+        return targetId;
+    }
+
+    public SearchResultDto<Object> searchTargetInfo (String searchString){
+
+
+       List<Object> targetDtoList = new ArrayList<>();
+
+       List<ImagePathDto> imageDtoList = new ArrayList<>();
+
+       List<TargetInfo> boardList = targetInfoRepository.findAllByPersonName(searchString);
+
+        for (TargetInfo targetInfo : boardList) {
+
+            TargetInfoDto targetInfoDto = entityToDto(targetInfo);
+
+            List<ImagePathDto> dtoList = imageService.ImageFindAllByTargetId(targetInfoDto.getTargetPk());
+
+            targetDtoList.add(targetInfoDto);
+
+            imageDtoList.addAll(dtoList);
+
+        }
+
+        return SearchResultDto.builder()
+                .dtoList(targetDtoList)
+                .imagePathDtoList(imageDtoList)
+                .build();
+    }
 
     public PagingInformationDto<Object> findTargetInfoPagingViewWithImage(String sortMethod, int pageNumber, String userId){
 
