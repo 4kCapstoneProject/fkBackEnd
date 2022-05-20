@@ -1,6 +1,6 @@
 package com.oldaim.fkbackend.entity;
 
-import com.oldaim.fkbackend.entity.enumType.ThumbNail;
+import com.oldaim.fkbackend.entity.enumType.FileType;
 import com.oldaim.fkbackend.entity.information.Information;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,14 +30,14 @@ public class Image extends BaseEntity{
 
     @Column
     @Enumerated
-    private ThumbNail thumbNail;
+    private FileType fileType;
 
     @Builder
-    public Image(Long id, String fileName, String filePath, Information information, ThumbNail thumbNail) {
+    public Image(Long id, String fileName, String filePath, Information information, FileType fileType) {
         this.id = id;
         this.fileName = fileName;
         this.filePath = filePath;
         this.information = information;
-        this.thumbNail = thumbNail;
+        this.fileType = fileType;
     }
 }

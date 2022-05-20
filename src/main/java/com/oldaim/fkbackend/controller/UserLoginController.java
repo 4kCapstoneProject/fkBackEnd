@@ -4,7 +4,6 @@ import com.oldaim.fkbackend.controller.dto.ReissueDto;
 import com.oldaim.fkbackend.controller.dto.TokenResponseDto;
 import com.oldaim.fkbackend.controller.dto.UserDto;
 import com.oldaim.fkbackend.service.UserService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ public class UserLoginController {
 
         String userId = userService.registerUser(userDTO);
 
-        String msg =  userId +" "+ "님이 회원가입 하셨습니다.";
+        String msg =  userId +" "+ "님의 회원가입이 정상적으로 처리되었습니다.";
 
         return ResponseEntity.ok(msg);
 
@@ -42,6 +41,7 @@ public class UserLoginController {
       return ResponseEntity.ok(dto);
 
     }
+
 
     @PostMapping("/reissueToken")
     public ResponseEntity<Map<String,String>> reIssueAccessToken(@RequestBody ReissueDto dto) throws RuntimeException {

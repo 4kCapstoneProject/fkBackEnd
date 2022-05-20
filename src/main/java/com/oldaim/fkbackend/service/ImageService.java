@@ -2,7 +2,7 @@ package com.oldaim.fkbackend.service;
 
 import com.oldaim.fkbackend.controller.dto.ImagePathDto;
 import com.oldaim.fkbackend.entity.Image;
-import com.oldaim.fkbackend.entity.enumType.ThumbNail;
+import com.oldaim.fkbackend.entity.enumType.FileType;
 import com.oldaim.fkbackend.entity.information.Information;
 import com.oldaim.fkbackend.entity.information.TargetInfo;
 import com.oldaim.fkbackend.repository.ImageRepository;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -28,32 +27,35 @@ public class ImageService {
 
     @Value("${upload.path}") private String uploadPath;
 
-    public void imageListFileUpload(List<MultipartFile> imageFileList, Long targetId, int thumbnailNumber) throws IOException {
+    public String imageListFileUpload(List<MultipartFile> imageFileList, Long targetId, int isUploadFile) throws IOException {
 
         TargetInfo targetInfo = targetInfoRepository.findById(targetId)
                 .orElseThrow(()->new IllegalArgumentException("유저가 존재하지 않습니다."));
 
-        for (int i = 0, imageFileListSize = imageFileList.size(); i < imageFileListSize; i++) {
+        String imagePath = "";
 
-            MultipartFile file = imageFileList.get(i);
+        for (MultipartFile file : imageFileList) {
 
-            if (i == thumbnailNumber - 1) {
-                this.imageFileUpload(file, targetInfo, "Able");
+            if (isUploadFile == 1) {
+                imagePath = this.imageFileUpload(file, targetInfo, "UPLOAD_FILE");
             } else {
-                this.imageFileUpload(file, targetInfo, "Unable");
+                imagePath = this.imageFileUpload(file, targetInfo, "CAPTURE_FILE");
             }
         }
+
+        return imagePath;
     }
 
     // 이미지 저장
-    public void imageFileUpload(MultipartFile file, Information info, String thumb) throws IOException {
+    public String imageFileUpload(MultipartFile file, Information info, String fileType) throws IOException {
 
         String fileName = file.getOriginalFilename();
         String fullPath = uploadPath + fileName;
 
         file.transferTo(new File(fullPath));
-        imageRepository.save(fileToEntity(fileName,fullPath,info,thumb));
+        imageRepository.save(fileToEntity(fileName,fullPath,info,fileType));
 
+        return fullPath;
     }
 
     public void imageByteFileUpload(byte[] fileData, Information info, String thumb) throws IOException {
@@ -72,15 +74,22 @@ public class ImageService {
     }
 
     // 이미지 조회
-    public ImagePathDto ImageFindByTargetId(Long targetId){
+    public ImagePathDto uploadImageFindByTargetId(Long targetId){
 
-        return entityToDto(imageRepository.findByTargetIdWithThumb(targetId,ThumbNail.Able));
+        return entityToDto(imageRepository.findByTargetIdWithThumb(targetId,FileType.UPLOAD_FILE));
 
     }
 
-    public List<ImagePathDto> ImageFindAllByTargetId(Long targetId) {
+    public ImagePathDto captureImageFindByTargetId(Long targetId){
 
-        List<Image> imageList = imageRepository.findAllByTargetId(targetId);
+        return entityToDto(imageRepository.findByTargetIdWithThumb(targetId,FileType.CAPTURE_FILE));
+
+    }
+
+
+    public List<ImagePathDto> imageFindAllByTargetId(Long targetId) {
+
+        List<Image> imageList = imageRepository.findAllByTargetId(targetId, FileType.UPLOAD_FILE);
 
         return imageList.stream().map(this::entityToDto).collect(Collectors.toList());
     }
@@ -90,13 +99,13 @@ public class ImageService {
     }
 
     // 이미지 DTO -> Entity
-    private Image fileToEntity(String fileName, String fullPath, Information info,String thumb){
+    private Image fileToEntity(String fileName, String fullPath, Information info,String fileType){
 
         return Image.builder()
                 .information(info)
                 .fileName(fileName)
                 .filePath(fullPath)
-                .thumbNail(ThumbNail.valueOf(thumb))
+                .fileType(FileType.valueOf(fileType))
                 .build();
     }
 

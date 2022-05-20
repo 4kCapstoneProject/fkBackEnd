@@ -8,7 +8,6 @@ import com.oldaim.fkbackend.service.ImageService;
 import com.oldaim.fkbackend.service.TargetInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,17 +44,27 @@ public class TargetInfoController {
 
     @PostMapping(value = "/uploadImage")
     public ResponseEntity<String> uploadImage(@RequestParam List<MultipartFile> imageFileList,
-                                              @RequestParam Long targetId, @RequestParam int thumbNum) throws IOException {
+                                              @RequestParam Long targetId, @RequestParam int isUploadFile) throws IOException {
 
-        imageService.imageListFileUpload(imageFileList,targetId,thumbNum);
 
-        String msg = "메세지를 잘 전달 하였습니다.";
+
+        String msg = imageService.imageListFileUpload(imageFileList,targetId,isUploadFile) +
+                " " + "에 업로드 이미지 파일이 저장 되었습니다.";
 
        return ResponseEntity.ok(msg);
-       
     }
 
-    @GetMapping(value = "/exist")
+    @PostMapping(value = "/uploadCaptureImage")
+    public ResponseEntity<String> uploadCaptureImage(@RequestParam List<MultipartFile> captureImage,
+                                                     @RequestParam Long targetId, @RequestParam int thumbNum) throws IOException {
+
+        String msg= imageService.imageListFileUpload(captureImage,targetId,thumbNum) +
+                " "+ "에 캡쳐 이미지 파일이 저장 되었습니다.";
+
+        return ResponseEntity.ok(msg);
+    }
+
+    @GetMapping(value = "/existData")
     public ResponseEntity<Boolean> existTarget(HttpServletRequest request){
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(jwtAuthenticationProvider
@@ -67,23 +76,23 @@ public class TargetInfoController {
        return ResponseEntity.ok(existData);
     }
 
-    @GetMapping(value = "/delete")
+    @GetMapping(value = "/deleteTarget")
     public ResponseEntity<Long> deleteTarget(@RequestParam(value = "targetId") Long targetId){
 
-       Long deleteEntityId =  targetInfoService.targetDelete(targetId);
+       Long deleteEntityId = targetInfoService.targetDelete(targetId);
 
        return ResponseEntity.ok(deleteEntityId);
 
     }
 
-    @GetMapping(value = "/search")
-    public ResponseEntity<SearchResultDto<Object>> searchTarget(@RequestParam(value = "search") String searchString){
+    @GetMapping(value = "/searchName")
+    public ResponseEntity<SearchResultDto<Object>> searchTarget(@RequestParam(value = "searchName") String searchString){
 
         return ResponseEntity.ok(targetInfoService.searchTargetInfo(searchString));
 
     }
 
-    @GetMapping(value = "/view")
+    @GetMapping(value = "/viewTarget")
     public ResponseEntity<PagingInformationDto<Object>> viewTarget(@RequestParam(value = "method")String method,
                                                            @RequestParam(value = "page")int pageNumber,
                                                            HttpServletRequest request){

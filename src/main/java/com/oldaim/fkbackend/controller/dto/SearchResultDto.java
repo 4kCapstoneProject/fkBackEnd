@@ -1,6 +1,5 @@
 package com.oldaim.fkbackend.controller.dto;
 
-import com.oldaim.fkbackend.entity.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -16,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -30,10 +29,10 @@ public class TargetInfoService {
 
     public Long targetInfoSave(TargetInfoDto infoDTO, String userId){
 
-        User infoOwner = userService.findByUserId(userId)
+        User user = userService.findByUserId(userId)
                 .orElseThrow(()->new IllegalArgumentException("인증되지 않은 유저의 접근입니다."));
 
-        TargetInfo targetInfo = dtoToEntity(infoDTO,infoOwner);
+        TargetInfo targetInfo = dtoToEntity(infoDTO,user);
 
         return  targetInfoRepository.save(targetInfo).getId();
 
@@ -69,7 +68,7 @@ public class TargetInfoService {
 
             TargetInfoDto targetInfoDto = entityToDto(targetInfo);
 
-            List<ImagePathDto> dtoList = imageService.ImageFindAllByTargetId(targetInfoDto.getTargetPk());
+            List<ImagePathDto> dtoList = imageService.imageFindAllByTargetId(targetInfoDto.getTargetPk());
 
             targetDtoList.add(targetInfoDto);
 
@@ -106,7 +105,7 @@ public class TargetInfoService {
 
             TargetInfoDto targetInfoDto = entityToDto(boardList.getContent().get(i));
 
-            List<ImagePathDto> dtoList = imageService.ImageFindAllByTargetId(targetInfoDto.getTargetPk());
+            List<ImagePathDto> dtoList = imageService.imageFindAllByTargetId(targetInfoDto.getTargetPk());
 
             targetDtoList.add(targetInfoDto);
 

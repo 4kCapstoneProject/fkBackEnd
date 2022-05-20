@@ -1,6 +1,9 @@
 package com.oldaim.fkbackend.service;
 
-import com.oldaim.fkbackend.controller.dto.*;
+import com.oldaim.fkbackend.controller.dto.ImagePathDto;
+import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
+import com.oldaim.fkbackend.controller.dto.ReturnInfoDto;
+import com.oldaim.fkbackend.controller.dto.TransmitModelDto;
 import com.oldaim.fkbackend.entity.User;
 import com.oldaim.fkbackend.entity.information.ReturnInfo;
 import com.oldaim.fkbackend.entity.information.TargetInfo;
@@ -12,9 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,16 +53,13 @@ public class ReturnInfoService {
 
     }
 
-
-    public ReturnInfo findReturnInfo(Long returnInfoId) {
-
-      return  returnInfoRepository.findById(returnInfoId)
-             .orElseThrow(()->new IllegalArgumentException("타겟 정보가 유효하지 않습니다."));
-
-    }
     public void transmitToModelAndSaveInfo(String userName ,Long targetId) throws IOException {
 
-        byte[] fileDate = webClientService.transmitImageToModel(targetId);
+        String captureMsg = webClientService.transmitCaptureImageToModel(targetId);
+
+        log.info(captureMsg);
+
+        byte[] fileData = webClientService.transmitUploadImageToModel(targetId);
 
         TransmitModelDto transmitModelDto = webClientService.transmitInformationToModel();
 
@@ -69,7 +67,15 @@ public class ReturnInfoService {
 
         Long returnId = this.ReturnInfoSave(transmitModelDto,userName);
 
-        imageService.imageByteFileUpload(fileDate , this.findReturnInfo(returnId),"Able");
+        imageService.imageByteFileUpload(fileData, this.findReturnInfo(returnId),"Able");
+
+    }
+
+    public ReturnInfo findReturnInfo(Long returnInfoId) {
+
+        return  returnInfoRepository.findById(returnInfoId)
+                .orElseThrow(()->new IllegalArgumentException("타겟 정보가 유효하지 않습니다."));
+
     }
 
     public PagingInformationDto<Object> findReturnInfoPagingViewWithImage(String sortMethod, int pageNumber){
@@ -91,7 +97,7 @@ public class ReturnInfoService {
 
             ReturnInfoDto returnInfoDto = entityToDto(boardList.getContent().get(i));
 
-            ImagePathDto dto= imageService.ImageFindByTargetId(returnInfoDto.getReturnPk());
+            ImagePathDto dto= imageService.uploadImageFindByTargetId(returnInfoDto.getReturnPk());
 
             returnDtoList.add(returnInfoDto);
 

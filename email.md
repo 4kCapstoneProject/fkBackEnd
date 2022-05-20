@@ -1,3 +1,6 @@
+
+## 삭제한 기능이지만 기록으로 남기고 싶어서 만듬
+### Gmail 요청 방식
 package com.oldaim.fkbackend.service;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -115,10 +118,10 @@ public class GmailTransmitService {
     }
 
     // Email 생성
-   private MimeMessage createEmail(String to, String from, String subject, String bodyText)
-            throws MessagingException {
-        Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
+private MimeMessage createEmail(String to, String from, String subject, String bodyText)
+throws MessagingException {
+Properties props = new Properties();
+Session session = Session.getDefaultInstance(props, null);
 
         MimeMessage email = new MimeMessage(session);
 

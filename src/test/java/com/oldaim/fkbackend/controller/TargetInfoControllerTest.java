@@ -1,6 +1,5 @@
 package com.oldaim.fkbackend.controller;
 
-import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
 import com.oldaim.fkbackend.controller.dto.TokenResponseDto;
 import com.oldaim.fkbackend.controller.dto.UserDto;
 import com.oldaim.fkbackend.entity.User;
@@ -9,38 +8,15 @@ import com.oldaim.fkbackend.repository.UserRepository;
 import com.oldaim.fkbackend.service.TargetInfoService;
 import com.oldaim.fkbackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.oldaim.fkbackend.utils.ApiDocumentUtils.getDocumentRequest;
-import static com.oldaim.fkbackend.utils.ApiDocumentUtils.getDocumentResponse;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest(properties = "spring.config.location="+"classpath:/application-test.yml")

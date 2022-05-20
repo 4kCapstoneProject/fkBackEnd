@@ -1,17 +1,16 @@
 package com.oldaim.fkbackend.controller;
 
 import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
-import com.oldaim.fkbackend.controller.dto.TransmitModelDto;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticProvider;
-import com.oldaim.fkbackend.service.ImageService;
 import com.oldaim.fkbackend.service.ReturnInfoService;
-import com.oldaim.fkbackend.service.WebClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class ReturnInfoController {
 
 
 
-    @GetMapping(value = "/pagingView")
+    @GetMapping(value = "/viewReturnInfo")
     public ResponseEntity<PagingInformationDto<Object>> pagingViewReturnInfo(@RequestParam(value = "method")String method,
                                                                      @RequestParam(value = "page")int pageNumber){
 
