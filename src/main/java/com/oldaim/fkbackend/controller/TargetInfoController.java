@@ -27,7 +27,6 @@ public class TargetInfoController {
     private final TargetInfoService targetInfoService;
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticProvider jwtAuthenticationProvider;
-
     private final ImageService imageService;
 
 
@@ -56,9 +55,9 @@ public class TargetInfoController {
 
     @PostMapping(value = "/uploadCaptureImage")
     public ResponseEntity<String> uploadCaptureImage(@RequestParam List<MultipartFile> captureImage,
-                                                     @RequestParam Long targetId, @RequestParam int thumbNum) throws IOException {
+                                                     @RequestParam Long targetId, @RequestParam int isUploadFile) throws IOException {
 
-        String msg= imageService.imageListFileUpload(captureImage,targetId,thumbNum) +
+        String msg= imageService.imageListFileUpload(captureImage,targetId,isUploadFile) +
                 " "+ "에 캡쳐 이미지 파일이 저장 되었습니다.";
 
         return ResponseEntity.ok(msg);
