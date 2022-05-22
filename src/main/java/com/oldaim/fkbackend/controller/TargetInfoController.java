@@ -1,7 +1,6 @@
 package com.oldaim.fkbackend.controller;
 
 import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
-import com.oldaim.fkbackend.controller.dto.SearchResultDto;
 import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
 import com.oldaim.fkbackend.security.jwt.JwtAuthenticProvider;
 import com.oldaim.fkbackend.service.ImageService;
@@ -85,9 +84,15 @@ public class TargetInfoController {
     }
 
     @GetMapping(value = "/searchName")
-    public ResponseEntity<SearchResultDto<Object>> searchTarget(@RequestParam(value = "searchName") String searchString){
+    public ResponseEntity<PagingInformationDto<Object>> searchTarget(@RequestParam(value = "searchName") String searchString,
+                                                                @RequestParam(value = "method")String method,
+                                                                @RequestParam(value = "page")int pageNumber,
+                                                                HttpServletRequest request){
 
-        return ResponseEntity.ok(targetInfoService.searchTargetInfo(searchString));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtAuthenticationProvider
+                .getUserPk(jwtAuthenticationProvider.resolveToken(request)));
+
+        return ResponseEntity.ok(targetInfoService.searchTargetInfoWithImageByName(searchString,method,pageNumber,userDetails.getUsername()));
 
     }
 

@@ -2,7 +2,6 @@ package com.oldaim.fkbackend.service;
 
 import com.oldaim.fkbackend.controller.dto.ImagePathDto;
 import com.oldaim.fkbackend.controller.dto.PagingInformationDto;
-import com.oldaim.fkbackend.controller.dto.SearchResultDto;
 import com.oldaim.fkbackend.controller.dto.TargetInfoDto;
 import com.oldaim.fkbackend.entity.User;
 import com.oldaim.fkbackend.entity.information.TargetInfo;
@@ -55,32 +54,19 @@ public class TargetInfoService {
         return targetId;
     }
 
-    public SearchResultDto<Object> searchTargetInfo (String searchString){
+    public PagingInformationDto<Object> searchTargetInfoWithImageByName (String searchString, String sortMethod, int pageNumber, String userId){
 
+        Sort sort = Sort.by(sortMethod).ascending();
 
-       List<Object> targetDtoList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber - 1,3,sort);
 
-       List<ImagePathDto> imageDtoList = new ArrayList<>();
+        Page<TargetInfo> pagingList = targetInfoRepository.findAllByPersonNamePageable(userId,searchString,pageable);
 
-       List<TargetInfo> boardList = targetInfoRepository.findAllByPersonName(searchString);
+        return makePagingDto(pagingList);
 
-        for (TargetInfo targetInfo : boardList) {
-
-            TargetInfoDto targetInfoDto = entityToDto(targetInfo);
-
-            List<ImagePathDto> dtoList = imageService.imageFindAllByTargetId(targetInfoDto.getTargetPk());
-
-            targetDtoList.add(targetInfoDto);
-
-            imageDtoList.addAll(dtoList);
-
-        }
-
-        return SearchResultDto.builder()
-                .dtoList(targetDtoList)
-                .imagePathDtoList(imageDtoList)
-                .build();
     }
+
+
 
     public PagingInformationDto<Object> findTargetInfoPagingViewWithImage(String sortMethod, int pageNumber, String userId){
 
@@ -89,21 +75,26 @@ public class TargetInfoService {
 
         Pageable pageable = PageRequest.of(pageNumber - 1,3,sort);
 
-        Page<TargetInfo> boardList = targetInfoRepository.findAllByUserIdPageable(userId,pageable);
+        Page<TargetInfo> pagingList = targetInfoRepository.findAllByUserIdPageable(userId,pageable);
+
+        return makePagingDto(pagingList);
+
+
+    }
+
+    private PagingInformationDto<Object> makePagingDto(Page<TargetInfo> pagingList){
 
         List<Object> targetDtoList = new ArrayList<>();
 
         List<ImagePathDto> imageDtoList = new ArrayList<>();
 
-        log.info(boardList.getTotalElements());
-
-        int bound = boardList.getContent().size();
+        int bound = pagingList.getContent().size();
 
         for (int i = 0; i < bound; i++) {
 
-            log.info(boardList.getContent().get(i));
+            log.info(pagingList.getContent().get(i));
 
-            TargetInfoDto targetInfoDto = entityToDto(boardList.getContent().get(i));
+            TargetInfoDto targetInfoDto = entityToDto(pagingList.getContent().get(i));
 
             List<ImagePathDto> dtoList = imageService.imageFindAllByTargetId(targetInfoDto.getTargetPk());
 
@@ -116,11 +107,13 @@ public class TargetInfoService {
         return PagingInformationDto.builder()
                 .imagePathDtoList(imageDtoList)
                 .dtoList(targetDtoList)
-                .hasNextPage(boardList.hasNext())
-                .hasPreviousPage(boardList.hasPrevious())
-                .totalElement((int) boardList.getTotalElements())
-                .totalPage(boardList.getTotalPages())
+                .hasNextPage(pagingList.hasNext())
+                .hasPreviousPage(pagingList.hasPrevious())
+                .totalElement((int) pagingList.getTotalElements())
+                .totalPage(pagingList.getTotalPages())
                 .build();
+
+
     }
 
     private TargetInfo dtoToEntity(TargetInfoDto infoDTO, User user){
