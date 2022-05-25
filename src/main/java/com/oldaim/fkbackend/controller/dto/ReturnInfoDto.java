@@ -9,14 +9,14 @@ import lombok.*;
 @NoArgsConstructor
 public class ReturnInfoDto {
 
-    private Long returnPk;
+    private Long returnId;
 
     private Long personAge;
 
     private String personName;
 
-    private Double onSimilarity;
+    private Float lpips;
 
-    private Double offSimilarity;
+    private Long targetId;
 
 }

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 @Table(name = "ServiceUser")
-public class User extends BaseEntity implements UserDetails{
+public class User implements UserDetails{
 
     @Id
     @Column(name = "user_PK")

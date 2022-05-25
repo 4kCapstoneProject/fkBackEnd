@@ -9,10 +9,8 @@ import lombok.*;
 @Setter
 public class TransmitModelDto {
 
-    private Long targetPk;
+    private String img;
 
-    private Double onSimilarity;
-
-    private Double offSimilarity;
+    private String lpips;
 
 }

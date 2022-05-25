@@ -1,9 +1,14 @@
 package com.oldaim.fkbackend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oldaim.fkbackend.controller.dto.ImagePathDto;
 import com.oldaim.fkbackend.controller.dto.TransmitModelDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
@@ -17,7 +22,8 @@ import java.net.URI;
 @Slf4j
 public class WebClientService {
 
-    private final URI uri = URI.create("http://127.0.0.1:5000");
+    private final String MODEL_SERVER_URL = "http://b700-35-227-161-178.ngrok.io/";
+    private final URI uri = URI.create(MODEL_SERVER_URL);
     private final WebClient client = WebClient.create(String.valueOf(uri));
     private final ImageService imageService;
 
@@ -25,47 +31,62 @@ public class WebClientService {
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
-        ImagePathDto imagePathDto = imageService.captureImageFindByTargetId(targetId);
+        ImagePathDto imagePathDto = imageService.uploadImageFindByTargetId(targetId);
 
-        builder.part("file[]", new FileSystemResource(imagePathDto.getFilePath()));
+        builder.part("file", new FileSystemResource(imagePathDto.getFilePath()));
 
         return client
                 .post()
-                .uri("/captureImage")
+                .uri("/set_target")
                 .bodyValue(builder.build())
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
     }
 
-    public byte[] transmitUploadImageToModel(Long targetId) throws IOException {
+    public TransmitModelDto transmitUploadImageToModel(Long targetId) throws IOException, ParseException {
         // 모델에 이미지 전송하기 위해 이미지 불러오기
 
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
-        ImagePathDto imagePathDto = imageService.uploadImageFindByTargetId(targetId);
+        ImagePathDto imagePathDto = imageService.captureImageFindByTargetId(targetId);
 
-        builder.part("file[]", new FileSystemResource(imagePathDto.getFilePath()));
+        builder.part("file", new FileSystemResource(imagePathDto.getFilePath()));
 
-        return client
-                .post()
-                .uri("/uploadImage")
-                .bodyValue(builder.build())
-                .retrieve()
-                .bodyToMono(byte[].class)
-                .block();
+        String informationFromModel = client
+                                        .post()
+                                        .uri("/predict")
+                                        .bodyValue(builder.build())
+                                        .retrieve()
+                                        .bodyToMono(String.class)
+                                        .block();
+
+        return convertJsonToDto(informationFromModel);
+
     }
 
-    public TransmitModelDto transmitInformationToModel(){
+    private TransmitModelDto convertJsonToDto(String jsonString) throws ParseException, JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        JSONParser parser = new JSONParser();
+
+        JsonNode jsonNode = mapper.readTree((String) parser.parse(jsonString));
+
+        String img = jsonNode.get("img").toString();
+
+        String lpips = jsonNode.get("lpips").toString();
 
 
-        return client
-                 .post()
-                 .uri("/dataUpload")
-                 .retrieve()
-                 .bodyToMono(TransmitModelDto.class)
-                 .block();
+
+       return TransmitModelDto.builder()
+               .img(img.substring(1,img.length() - 1))
+               .lpips(lpips.substring(1,lpips.length()-1))
+               .build();
+
     }
+
+
 
 }

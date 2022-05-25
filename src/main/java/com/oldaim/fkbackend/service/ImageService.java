@@ -58,7 +58,7 @@ public class ImageService {
         return fullPath;
     }
 
-    public void imageByteFileUpload(byte[] fileData, Information info, String thumb) throws IOException {
+    public void imageByteFileUpload(byte[] fileData, Information info, String fileType) throws IOException {
 
             String fileName = "uploadFile"+info.getId()+".png";
             String filePath = uploadPath + fileName;
@@ -68,7 +68,7 @@ public class ImageService {
             fileOutputStream.write(fileData);
             fileOutputStream.close();
 
-            imageRepository.save(fileToEntity(fileName,filePath,info,thumb));
+            imageRepository.save(fileToEntity(fileName,filePath,info,fileType));
 
 
     }
@@ -87,7 +87,7 @@ public class ImageService {
     }
 
 
-    public List<ImagePathDto> imageFindAllByTargetId(Long targetId) {
+    public List<ImagePathDto> imageFindAllByInformationId(Long targetId) {
 
         List<Image> imageList = imageRepository.findAllByTargetId(targetId, FileType.UPLOAD_FILE);
 

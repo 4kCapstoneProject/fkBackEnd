@@ -1,6 +1,5 @@
 package com.oldaim.fkbackend.entity.information;
 
-import com.oldaim.fkbackend.entity.BaseEntity;
 import com.oldaim.fkbackend.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Information extends BaseEntity {
+public class Information {
     @Id
     @Column(name = "info_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

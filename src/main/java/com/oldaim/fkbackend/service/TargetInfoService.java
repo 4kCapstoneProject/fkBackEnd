@@ -96,7 +96,7 @@ public class TargetInfoService {
 
             TargetInfoDto targetInfoDto = entityToDto(pagingList.getContent().get(i));
 
-            List<ImagePathDto> dtoList = imageService.imageFindAllByTargetId(targetInfoDto.getTargetPk());
+            List<ImagePathDto> dtoList = imageService.imageFindAllByInformationId(targetInfoDto.getTargetPk());
 
             targetDtoList.add(targetInfoDto);
 

@@ -14,16 +14,15 @@ import javax.persistence.Entity;
 public class ReturnInfo extends Information  {
 
     @Column
-    private Double maskOnSimilarity;
-
+    private Float lpips ;
     @Column
-    private Double maskOffSimilarity;
+    private Long targetId;
 
     @Builder
-    public ReturnInfo(Long id, User user, String personName, Long personAge, Double maskOnSimilarity, Double maskOffSimilarity) {
+    public ReturnInfo(Long id, User user, String personName, Long personAge, Float lpips, Long targetId) {
         super(id, user, personName, personAge);
-        this.maskOnSimilarity = maskOnSimilarity;
-        this.maskOffSimilarity = maskOffSimilarity;
+        this.lpips = lpips;
+        this.targetId = targetId;
     }
 }
 

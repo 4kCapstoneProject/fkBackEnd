@@ -58,6 +58,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.5'
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
     //로그인 인증 관련 dependency
     implementation 'org.springframework.boot:spring-boot-starter-security:2.6.6'
