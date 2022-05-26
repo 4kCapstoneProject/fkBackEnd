@@ -22,7 +22,7 @@ spring:
       max-request-size: 20MB
 
 jwt:
-  secret: cZlsmdpaLksSAdsdmdaskjndasdas1j234214lasdasdasSnadaklsnd242adsadndkanskdskahfbj3123122k
+  secret: cZlsmdpaLksSAdsdmdaskjndasdas1j234214lasdasdasSnadaklsnd242adsadndkanskdskahfbj3123122kk
   access_valid_time: 12000000000000
   refresh_valid_time: 1209600033
 
