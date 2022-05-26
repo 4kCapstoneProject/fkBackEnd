@@ -81,6 +81,7 @@ public class ReturnInfoService {
                 .personAge(targetInfo.getPersonAge())
                 .personName(targetInfo.getPersonName())
                 .lpips(Float.parseFloat(transmitModelDto.getLpips()))
+                .targetId(targetPk)
                 .build();
 
         ReturnInfo returnInfo = dtoToEntity(infoDto,infoOwner);
