@@ -22,7 +22,7 @@ import java.net.URI;
 @Slf4j
 public class WebClientService {
 
-    private final String MODEL_SERVER_URL = "http://bd21-34-87-162-246.ngrok.io/";
+    private final String MODEL_SERVER_URL = "http://5ccd-34-87-162-246.ngrok.io";
     private final URI uri = URI.create(MODEL_SERVER_URL);
     private final WebClient client = WebClient.create(String.valueOf(uri));
     private final ImageService imageService;

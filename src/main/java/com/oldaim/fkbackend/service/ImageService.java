@@ -98,6 +98,12 @@ public class ImageService {
         imageRepository.deleteAllByTargetId(targetId);
     }
 
+    public void captureImageDeleteByTargetIdAndFileType(Long targetId){
+
+        imageRepository.deleteByTargetIdAndFileType(targetId,FileType.CAPTURE_FILE);
+
+    }
+
     // 이미지 DTO -> Entity
     private Image fileToEntity(String fileName, String fullPath, Information info,String fileType){
 

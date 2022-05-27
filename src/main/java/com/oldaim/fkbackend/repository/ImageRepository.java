@@ -24,4 +24,8 @@ public interface ImageRepository extends JpaRepository<Image,Long> {
     @Query("DELETE FROM Image i WHERE i.information.id =?1 ")
     void deleteAllByTargetId(Long targetId);
 
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Image i WHERE  i.information.id =?1 AND i.fileType =?2")
+    void deleteByTargetIdAndFileType(Long targetId, FileType captureFile);
 }

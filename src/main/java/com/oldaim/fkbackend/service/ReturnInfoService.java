@@ -40,6 +40,10 @@ public class ReturnInfoService {
 
         TransmitModelDto transmitModelDto = webClientService.transmitUploadImageToModel(targetId);
 
+        imageService.captureImageDeleteByTargetIdAndFileType(targetId);
+
+        log.info("Capture Image is deleted!");
+
         Long returnId = this.ReturnInfoSave(transmitModelDto,userName,targetId);
 
         imageService.imageByteFileUpload(Base64.decodeBase64(transmitModelDto.getImg()), this.findReturnInfo(returnId),"UPLOAD_FILE");
