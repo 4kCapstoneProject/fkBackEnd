@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 public class ModelProcessedDataDto {
 
-    private Float lpipsList;
+    private Float scoreList;
 
     private List<ImagePathDto> imagePathDto;
 

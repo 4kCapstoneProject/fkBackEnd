@@ -11,6 +11,6 @@ public class TransmitModelDto {
 
     private String img;
 
-    private String lpips;
+    private String score;
 
 }

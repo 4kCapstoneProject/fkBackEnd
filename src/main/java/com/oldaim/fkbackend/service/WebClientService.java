@@ -22,7 +22,7 @@ import java.net.URI;
 @Slf4j
 public class WebClientService {
 
-    private final String MODEL_SERVER_URL = "http://f31b-35-229-113-191.ngrok.io";
+    private final String MODEL_SERVER_URL = "http://97a3-35-243-218-92.ngrok.io";
     private final URI uri = URI.create(MODEL_SERVER_URL);
     private final WebClient client = WebClient.create(String.valueOf(uri));
     private final ImageService imageService;
@@ -76,13 +76,13 @@ public class WebClientService {
 
         String img = jsonNode.get("img").toString();
 
-        String lpips = jsonNode.get("lpips").toString();
+        String score = jsonNode.get("score").toString();
 
 
 
        return TransmitModelDto.builder()
                .img(img.substring(1,img.length() - 1))
-               .lpips(lpips.substring(1,lpips.length()-1))
+               .score(score.substring(1,score.length()-1))
                .build();
 
     }

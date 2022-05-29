@@ -62,7 +62,7 @@ public class ReturnInfoService {
 
             dtoList.add( ModelProcessedDataDto.builder()
                             .imagePathDto(imagePathDtoList)
-                            .lpipsList(returnInfo.getLpips())
+                            .scoreList(returnInfo.getScore())
                             .build());
 
         }
@@ -84,7 +84,7 @@ public class ReturnInfoService {
         ReturnInfoDto infoDto = ReturnInfoDto.builder()
                 .personAge(targetInfo.getPersonAge())
                 .personName(targetInfo.getPersonName())
-                .lpips(Float.parseFloat(transmitModelDto.getLpips()))
+                .score(Float.parseFloat(transmitModelDto.getScore()))
                 .targetId(targetPk)
                 .build();
 
@@ -111,7 +111,7 @@ public class ReturnInfoService {
                 .user(user)
                 .personAge(dto.getPersonAge())
                 .personName(dto.getPersonName())
-                .lpips(dto.getLpips())
+                .score(dto.getScore())
                 .targetId(dto.getTargetId())
                 .build();
 
@@ -123,7 +123,7 @@ public class ReturnInfoService {
                 .returnId(returnInfo.getId())
                 .personAge(returnInfo.getPersonAge())
                 .personName(returnInfo.getPersonName())
-                .lpips(returnInfo.getLpips())
+                .score(returnInfo.getScore())
                 .returnId(returnInfo.getTargetId())
                 .build();
 

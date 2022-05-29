@@ -15,7 +15,7 @@ public class ReturnInfoDto {
 
     private String personName;
 
-    private Float lpips;
+    private Float score;
 
     private Long targetId;
 
