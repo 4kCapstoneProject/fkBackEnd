@@ -13,9 +13,11 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -57,19 +59,27 @@ public class WebClientService {
         builder.part("file", new FileSystemResource(imagePathDto.getFilePath()));
 
         log.info("capture file");
+        try {
+            String informationFromModel = client
+                    .post()
+                    .uri("/predict")
+                    .bodyValue(builder.build())
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+            log.info("transmit well capture");
 
-        String informationFromModel = client
-                                        .post()
-                                        .uri("/predict")
-                                        .bodyValue(builder.build())
-                                        .retrieve()
-                                        .bodyToMono(String.class)
-                                        .block();
+            return convertJsonToDto(informationFromModel);
+        }
+        catch (WebClientResponseException e)
+        {
+            imageService.captureImageDeleteByTargetIdAndFileType(targetId);
 
-        log.info("transmit well capture");
+            log.info(e.getMessage());
 
-        return convertJsonToDto(informationFromModel);
+        }
 
+      return new TransmitModelDto();
     }
 
     private TransmitModelDto convertJsonToDto(String jsonString) throws ParseException, JsonProcessingException {
