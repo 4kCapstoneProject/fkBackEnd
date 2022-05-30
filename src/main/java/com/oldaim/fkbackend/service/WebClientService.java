@@ -22,7 +22,7 @@ import java.net.URI;
 @Slf4j
 public class WebClientService {
 
-    private final String MODEL_SERVER_URL = "http://97a3-35-243-218-92.ngrok.io";
+    private final String MODEL_SERVER_URL = "http://4692-34-147-59-106.ngrok.io/";
     private final URI uri = URI.create(MODEL_SERVER_URL);
     private final WebClient client = WebClient.create(String.valueOf(uri));
     private final ImageService imageService;
@@ -34,6 +34,8 @@ public class WebClientService {
         ImagePathDto imagePathDto = imageService.uploadImageFindByTargetId(targetId);
 
         builder.part("file", new FileSystemResource(imagePathDto.getFilePath()));
+
+        log.info("upload file");
 
         return client
                 .post()
@@ -54,6 +56,8 @@ public class WebClientService {
 
         builder.part("file", new FileSystemResource(imagePathDto.getFilePath()));
 
+        log.info("capture file");
+
         String informationFromModel = client
                                         .post()
                                         .uri("/predict")
@@ -61,6 +65,8 @@ public class WebClientService {
                                         .retrieve()
                                         .bodyToMono(String.class)
                                         .block();
+
+        log.info("transmit well capture");
 
         return convertJsonToDto(informationFromModel);
 

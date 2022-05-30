@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.mail.MessagingException;
 import javax.validation.ValidationException;
 import java.security.GeneralSecurityException;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
+    @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class , NoSuchElementException.class})
     public ResponseEntity<ErrorResponse> handleNotFoundException(RuntimeException e) {
         e.printStackTrace();
         ErrorResponse response = createErrorResponse(e, HttpStatus.FORBIDDEN);
