@@ -37,7 +37,7 @@ public class WebClientService {
 
         builder.part("file", new FileSystemResource(imagePathDto.getFilePath()));
 
-        log.info("upload file");
+        log.info("upload files");
 
         return client
                 .post()
