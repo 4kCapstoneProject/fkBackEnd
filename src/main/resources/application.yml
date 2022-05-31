@@ -27,8 +27,8 @@ jwt:
   refresh_valid_time: 1209600033
 
 upload:
-    #path: "/Users/kimdonggyun/Desktop/bootpicture/"
-    path: "/var/lib/docker/volumes/fkproject-volume/_data/fkprojectpicture/"
+    path: "/Users/kimdonggyun/Desktop/bootpicture/"
+    #path: "/var/lib/docker/volumes/fkproject-volume/_data/fkprojectpicture/"
 
 logging:
     level:

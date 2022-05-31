@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,8 +60,10 @@ public class ImageService {
     }
 
     public void imageByteFileUpload(byte[] fileData, Information info, String fileType) throws IOException {
+            long seed = System.currentTimeMillis();
+            Random fileNumber = new Random(seed);
 
-            String fileName = "uploadFile"+info.getId()+".png";
+            String fileName = "uploadFile"+fileNumber.nextInt(100000)+".png";
             String filePath = uploadPath + fileName;
 
             File imageFile = new File(filePath);
