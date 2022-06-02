@@ -24,7 +24,7 @@ import java.util.Arrays;
 @Slf4j
 public class WebClientService {
 
-    private final String MODEL_SERVER_URL = "http://01c6-34-80-235-43.ngrok.io";
+    private final String MODEL_SERVER_URL = "http://1680-34-142-174-191.ngrok.io";
     private final URI uri = URI.create(MODEL_SERVER_URL);
     private final WebClient client = WebClient.create(String.valueOf(uri));
     private final ImageService imageService;
