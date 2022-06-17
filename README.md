@@ -1,15 +1,18 @@
 # 마스크 착용 얼굴 식별 프로젝트 - Backend Part
 
 
-###소개
+
+
+### 소개
 ***
-2022 1학기 캡스톤 프로젝트로 진행된 마스크 착용 얼굴 식별 프로젝트 Backend Part 저장소 입니다.
+2022 1학기 캡스톤 프로젝트로 진행된 마스크 착용 얼굴 식별 프로젝트 Backend Part 저장소 입니다. 
+
 프로젝트에 대한 자세한 사항은 [발표자료 pdf](file.pdf) 를 참고해 주세요
 
-###개발자
+### 개발자
 ***
-[김동균](https://github.com/oldaim) - Backend Part
-[김정호](https://github.com/cloud0406) - frontend Part
+- [김동균](https://github.com/oldaim) - Backend 
+- [김정호](https://github.com/cloud0406) - Frontend 
 
 ### 기술 스택
 ***
